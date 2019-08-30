@@ -1,0 +1,98 @@
+//Beginning of content.js
+//---------------------------------------%%% Rightly Extension %%%-----------------------------------------
+//---------------------------------------adding listener for brower action -----------------------------
+// add listener to catch the user activating the extension
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        //was it clicked?
+        if (request.message === "clicked_browser_action") {
+            chrome.storage.local.get(['STATE'], function (result) {
+                console.log('populating');
+                populate();
+                if (result.STATE != 1) {//if clicked before and not turned on, turn it on. 
+                    chrome.storage.local.set({ STATE: 1 }, function () {});
+                    //this storage needs to be turned off later, which will be by clearing
+                    
+                }
+            });
+
+
+        }
+    }
+);
+
+//-------------------------------------------Recurring part begin-----------------------------------------
+//If the state is run, allow the lister function to run
+chrome.storage.local.get(['STATE'], function (result){
+    if (result.STATE == 1) {
+        //Reading a file
+        chrome.runtime.sendMessage({ running: "yes" }, function (response) {
+            console.log(response.cur_url);
+            if (response.cur_url == "https://www.rightly-staging.co.uk/cms/companies/company/") {
+                document.getElementsByClassName("button bicolor icon icon-plus")[0].click();
+            }
+            if (response.cur_url == "https://www.rightly-staging.co.uk/cms/companies/company/create/") {
+                console.log('inserting');
+
+                insert();
+            }
+            //chrome.storage.local.clear();
+        });
+//reading file done
+        }
+});
+//-------------------------------------------Recurring part end--------------------------------------------
+
+
+function csvToArray(csv) {
+    rows = csv.split("\n");
+    return rows.map(function (row) {
+        return row.split(",");
+    });
+};
+
+function populate() {
+    var csv = "name of company1,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company2,DPO@email.com,Banking,00_trial,this is description\n";
+    var arr = csvToArray(csv);
+
+    chrome.storage.local.get(['key'], function (result) {
+        //concatenate that result with the most recent result
+        chrome.storage.local.set({ key: arr }, function () { });
+        console.log('array stored');
+
+    });
+
+}
+
+function insert() {
+    chrome.storage.local.get(['key'], function (result){
+        var arr = result.key;
+        console.log('got the array');
+        console.log(arr);
+        var a = arr.pop();
+        document.getElementsByName('name')[0].value = a[0];
+        document.getElementsByName('email')[0].value = a[1];
+        s = document.getElementById('id_industries').childNodes.length
+        for (i = 1; i < s; i += 2) {
+            if (document.getElementById('id_industries').childNodes[i].childNodes[0].innerText.includes(a[2]) || document.getElementById('id_industries').childNodes[i].childNodes[0].innerText.includes(a[3])) {
+                document.getElementById('id_industries').childNodes[i].childNodes[0].childNodes[0].checked = true
+            }
+        }
+        document.getElementsByClassName("public-DraftStyleDefault-block public-DraftStyleDefault-ltr")[0].childNodes[0].childNodes[0].innerText = a[4];
+        document.getElementsByClassName('button action-save button-longrunning')[0].click();
+
+        chrome.storage.local.get(['key'], function (result) {
+            //concatenate that result with the most recent result
+            total = arr;
+            //save the total into the same key in our JSON Chrome storage
+            chrome.storage.local.set({ key: total }, function () { });
+            //if we have reached the last page, invoke the downloading procedure
+            if (arr.length == 0) {
+                //console.log('here')
+                 chrome.storage.local.clear();
+            }
+        });
+    });
+
+}
