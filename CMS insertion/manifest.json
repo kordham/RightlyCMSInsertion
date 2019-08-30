@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Rightly CMS Extension",
+  "version": "0.0.0.1",
+  "author": "Mohammad Kordzanganeh",
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "permissions": [
+    "http://*/*",
+    "https://*/*",
+    "storage",
+    "tabs"
+  ],
+  "browser_action": {
+    //"default_icon": "128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.rightly-staging.co.uk/cms/companies/company/*",
+        "http://www.rightly-staging.co.uk/cms/companies/company/*"
+      ],
+      "js": [ "jquery-3.4.1.js", "content.js" ]
+    }
+  ]
+}

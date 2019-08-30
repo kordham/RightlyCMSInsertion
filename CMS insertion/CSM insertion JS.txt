@@ -1,0 +1,25 @@
+document.getElementsByClassName("button bicolor icon icon-plus")[0].click();
+// Insertion Code
+a = ["name of company","DPO@email.com","Banking","00_trial","this is description"]
+document.getElementsByName('name')[0].value = a[0];
+document.getElementsByName('email')[0].value = a[1];
+s = document.getElementById('id_industries').childNodes.length
+for(i=1;i<s;i+=2){
+if(document.getElementById('id_industries').childNodes[i].childNodes[0].innerText.includes(a[2]) || document.getElementById('id_industries').childNodes[i].childNodes[0].innerText.includes(a[3])){
+document.getElementById('id_industries').childNodes[i].childNodes[0].childNodes[0].checked=true}
+}
+document.getElementsByClassName("public-DraftStyleDefault-block public-DraftStyleDefault-ltr")[0].childNodes[0].childNodes[0].innerText = a[4];
+//
+document.getElementsByClassName('button action-save button-longrunning')[0].click();
+
+
+"name of company1,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company2,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company3,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company4,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company5,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company6,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company7,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company8,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company9,DPO@email.com,Banking,00_trial,this is description\n" +
+        "name of company10,DPO@email.com,Banking,00_trial,this is description";
