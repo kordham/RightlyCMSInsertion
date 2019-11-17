@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Rightly CMS Insertion Extension",
+  "version": "0.0.0.6",
+  "author": "Mohammad Kordzanganeh",
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "permissions": [
+    "http://*/*",
+    "https://*/*",
+    "storage",
+    "tabs"
+  ],
+  "browser_action": {
+   "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.rightly.co.uk/cms/companies/company/*",
+        "http://www.rightly.co.uk/cms/companies/company/*"
+      ],
+      "js": [ "jquery-3.4.1.js", "content.js" ]
+    }
+  ]
+}
